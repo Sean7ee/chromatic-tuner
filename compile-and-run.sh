@@ -18,7 +18,8 @@ echo "✅ Build successful!"
 # 3. Navigate back to the workspace root
 cd ..
 
-cp tuner-dsp/pkg/* dist/pkg
+cp tuner-dsp/pkg/tuner_dsp* dist/pkg
+cp tuner-dsp/pkg/package.json dist/pkg
 
 echo "🚀 Starting local server..."
 echo "👉 Open your browser to: http://localhost:8000/web/"

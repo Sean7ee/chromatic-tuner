@@ -128,10 +128,14 @@ async function startTuner() {
     startBtn.disabled = true; // Prevent double-clicks
 
     try {
-        const audioCtx = new AudioContext();
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        if (audioCtx.state === 'suspended') {
+            await audioCtx.resume();
+        }
 
         // 1. Fetch and compile the WebAssembly binary on the Main Thread.
-        const response = await fetch('./pkg/tuner_dsp_bg.wasm');
+        const response = await fetch('../tuner-dsp/pkg/tuner_dsp_bg.wasm');
         const wasmBytes = await response.arrayBuffer();
         const compiledWasmModule = await WebAssembly.compile(wasmBytes);
 
@@ -178,7 +182,14 @@ async function startTuner() {
         };
 
         // 6. Connect the physical microphone to the Worklet
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+            audio: {
+                echoCancellation: false,
+                autoGainControl: false,
+                noiseSuppression: false,
+                channelCount: 1
+            }    
+        });
 
         startBtn.innerText = "Microphone Active";
         startBtn.style.backgroundColor = "#10b981"; // Turn the button green
