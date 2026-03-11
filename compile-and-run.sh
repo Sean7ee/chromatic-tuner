@@ -15,9 +15,10 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "✅ Build successful!"
-
 # 3. Navigate back to the workspace root
 cd ..
+
+cp tuner-dsp/pkg/* dist/pkg
 
 echo "🚀 Starting local server..."
 echo "👉 Open your browser to: http://localhost:8000/web/"

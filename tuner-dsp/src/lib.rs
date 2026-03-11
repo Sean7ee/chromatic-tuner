@@ -35,7 +35,7 @@ impl WasmTuner {
             sum_sq += sample * sample;
         }
         let mean_sq = sum_sq / buffer.len() as f32;
-        let noise_floor_thres = 0.0003;
+        let noise_floor_thres = 0.0001;
         if mean_sq < noise_floor_thres {
             return 0.0;
         }
