@@ -131,7 +131,7 @@ async function startTuner() {
         const audioCtx = new AudioContext();
 
         // 1. Fetch and compile the WebAssembly binary on the Main Thread.
-        const response = await fetch('../tuner-dsp/pkg/tuner_dsp_bg.wasm');
+        const response = await fetch('./pkg/tuner_dsp_bg.wasm');
         const wasmBytes = await response.arrayBuffer();
         const compiledWasmModule = await WebAssembly.compile(wasmBytes);
 

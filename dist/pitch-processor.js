@@ -1,7 +1,7 @@
 // pitch-processor.js
 import './text-polyfill.js';
 // Import the WASM loader and your Rust wrapper struct
-import init, { WasmTuner } from '../tuner-dsp/pkg/tuner_dsp.js';
+import init, { WasmTuner } from './pkg/tuner_dsp.js';
 
 class PitchProcessor extends AudioWorkletProcessor {
     constructor() {
