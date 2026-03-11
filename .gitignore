@@ -1,0 +1,11 @@
+# rust compiled artifacts
+target/
+**/*.rs.bk
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Python cache that may have been generated from testing
+__pycache__/
+*.py[cod]
