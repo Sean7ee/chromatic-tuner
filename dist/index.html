@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasm DSP Tuner</title>
+    <style>
+        /* A bare-metal, high-visibility UI for testing */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #888888;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #pitch-display {
+            font-size: 3rem; /* Scaled down from the massive 6rem */
+            font-variant-numeric: tabular-nums;
+            margin: 0 0 2rem 0;
+            
+            /* The "Smaller Window" UI design */
+            background-color: #1a1a1a; 
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: 2px solid #2a2a2a;
+            box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.6);
+            
+            /* Keep a fixed width so the box doesn't resize when the text changes */
+            min-width: 250px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Real-Time DSP Tuner</h1>
+    
+    <h2 id="pitch-display">-- Hz</h2>
+
+    <canvas id="tuner-canvas" width="600" height="350"></canvas>
+    
+    <button id="start-btn">Enable Microphone</button>
+
+    <script type="module" src="app.js"></script>
+
+</body>
+</html>

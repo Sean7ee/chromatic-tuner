@@ -1,0 +1,15 @@
+{
+  "name": "tuner-dsp",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "tuner_dsp_bg.wasm",
+    "tuner_dsp.js",
+    "tuner_dsp.d.ts"
+  ],
+  "main": "tuner_dsp.js",
+  "types": "tuner_dsp.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
