@@ -40,19 +40,24 @@ Digital audio provides discrete integer samples. This introduces a slight issue 
 ### 3. Ring Buffers
 A ring buffer was implemented to provide a stream of fresh audio data to the tuning mechanism. This minimizes the amount of memory allocated to store the raw audio data for the mathematical calculations required by the YIN algorithm. 
 
-### 4. FFT trick for computational optimization
-A clever manipulation of the DF function in the YIN algorithm yields the following expression:
-$$DF = \sum_{i=t}^{t + W}(f(x_i) - f(x_i + \tau))^2 $$
-expanding the binomial yields
-$$ = \sum_{i=t}^{t + W}(f(x_i)^2 + f(x_i + \tau)^2 - 2f(x_i)f(x_i + \tau)) $$
-we can also write this expression as
-$$ = ACF(0, t) + ACF(0, t+ \tau) - 2ACF(\tau, t) $$
-In the implementation, the first two energy terms are easily calculated with a cumulative sum of squares array based on the audio data array that was passed in. Which is $O(N)$ with the pre-calculated sum of squares array.
-Calculating $\sum_{i=t}^{t + W} - 2f(x_i)f(x_i + \tau) $ without the FFT trick requires $O(W * N)$ where N is the number of different lags we are testing. With the current implementation of the tuner, this comes down to $O(2400*4096)$ with 48KHz sampling rate.
+### 4. The FFT Trick: $O(N^2)$ to $O(N \log N)$
+A clever mathematical manipulation of the YIN Difference Function ($DF$) yields a massive computational optimization. The core expression is:
 
-Since ACF is a correlation of two shifted functions, we can calculate this efficiently using the FFT. We re-write the ACF as a convolution between the signal x and its time-reversed signal x' and apply the Convolution theorem to precalculate the ACF values of each frequency we want to calculate using the FFT. This takes $O(N log_2 N)$ time as opposed to the naive $O(W * N)$ solution. 
+$$DF(\tau) = \sum_{i=t}^{t + W} (f(x_i) - f(x_i + \tau))^2$$
 
-## 🛠️ Local Development & CI/CD
+Expanding the binomial yields:
+
+$$= \sum_{i=t}^{t + W} \left( f(x_i)^2 + f(x_i + \tau)^2 - 2f(x_i)f(x_i + \tau) \right)$$
+
+We can also write this expression as:
+
+$$= ACF(0, t) + ACF(0, t+ \tau) - 2ACF(\tau, t)$$
+
+In the implementation, the first two energy terms are easily calculated with a cumulative sum of squares array based on the audio data array that was passed in. This operates in $\mathcal{O}(N)$ time using the pre-calculated array.
+
+Calculating $\sum_{i=t}^{t + W} -2f(x_i)f(x_i + \tau)$ without the FFT trick requires $\mathcal{O}(W \cdot N)$ operations, where $N$ is the number of different lags we are testing. With the current implementation of the tuner, this comes down to exactly $\mathcal{O}(2400 \times 4096)$ operations at a $48\text{ kHz}$ sampling rate.
+
+Since ACF is a correlation of two shifted functions, we can calculate this efficiently using the FFT. We rewrite the ACF as a convolution between the signal $x$ and its time-reversed signal $x'$ and apply the Convolution Theorem to precalculate the ACF values of each lag we want to calculate. This takes $\mathcal{O}(N \log_2 N)$ time, completely bypassing the naive $\mathcal{O}(W \cdot N)$ bottleneck.## 🛠️ Local Development & CI/CD
 
 This repository utilizes a custom whitelist-extraction build pipeline to bypass default Wasm compilation traps and prepare a pristine production distribution.
 
