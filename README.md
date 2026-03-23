@@ -57,7 +57,9 @@ In the implementation, the first two energy terms are easily calculated with a c
 
 Calculating $\sum_{i=t}^{t + W} -2f(x_i)f(x_i + \tau)$ without the FFT trick requires $\mathcal{O}(W \cdot N)$ operations, where $N$ is the number of different lags we are testing. With the current implementation of the tuner, this comes down to exactly $\mathcal{O}(2400 \times 4096)$ operations at a $48\text{ kHz}$ sampling rate.
 
-Since ACF is a correlation of two shifted functions, we can calculate this efficiently using the FFT. We rewrite the ACF as a convolution between the signal $x$ and its time-reversed signal $x'$ and apply the Convolution Theorem to precalculate the ACF values of each lag we want to calculate. This takes $\mathcal{O}(N \log_2 N)$ time, completely bypassing the naive $\mathcal{O}(W \cdot N)$ bottleneck.## 🛠️ Local Development & CI/CD
+Since ACF is a correlation of two shifted functions, we can calculate this efficiently using the FFT. We rewrite the ACF as a convolution between the signal $x$ and its time-reversed signal $x'$ and apply the Convolution Theorem to precalculate the ACF values of each lag we want to calculate. This takes $\mathcal{O}(N \log_2 N)$ time, completely bypassing the naive $\mathcal{O}(W \cdot N)$ bottleneck.
+
+## 🛠️ Local Development & CI/CD
 
 This repository utilizes a custom whitelist-extraction build pipeline to bypass default Wasm compilation traps and prepare a pristine production distribution.
 
