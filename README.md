@@ -55,7 +55,7 @@ $$= ACF(0, t) + ACF(0, t+ \tau) - 2ACF(\tau, t)$$
 
 In the implementation, the first two energy terms are easily calculated with a cumulative sum of squares array based on the audio data array that was passed in. This operates in $\mathcal{O}(N)$ time using the pre-calculated array.
 
-Calculating $\sum_{i=t}^{t + W} -2f(x_i)f(x_i + \tau)$ without the FFT trick requires $\mathcal{O}(W \cdot N)$ operations, where $N$ is the number of different lags we are testing. With the current implementation of the tuner, this comes down to exactly $\mathcal{O}(2400 \times 4096)$ operations at a $48\text{ kHz}$ sampling rate.
+Calculating $\sum_{i=t}^{t + W} -2f(x_i)f(x_i + \tau)$ without the FFT trick requires $\mathcal{O}(W \cdot N)$ operations, where $N$ is the number of different lags we are testing. With the current implementation of the tuner, this comes down to exactly $\mathcal{O}(2400 \times 4096)$ operations at a $48\text{ kHz}$ sampling rate and a minimum frequency of 20Hz.
 
 Since ACF is a correlation of two shifted functions, we can calculate this efficiently using the FFT. We rewrite the ACF as a convolution between the signal $x$ and its time-reversed signal $x'$ and apply the Convolution Theorem to precalculate the ACF values of each lag we want to calculate. This takes $\mathcal{O}(N \log_2 N)$ time, completely bypassing the naive $\mathcal{O}(W \cdot N)$ bottleneck.
 
@@ -81,3 +81,20 @@ to start hosting the server
 
 wasm-pack build --target web 
 while in chromatic-tuner/ to recompile rust into .js
+
+## 📚 Resources & Citations
+
+This project was built using insights and architectures from the following academic and engineering resources:
+
+### Papers & Documentation
+* **[YIN, a fundamental frequency estimator for speech and music](https://asa.scitation.org/doi/10.1121/1.1458024)** * *De Cheveigné, A., & Kawahara, H. (2002).* The foundational mathematical paper detailing the Difference Function and Cumulative Mean Normalized Difference Function used in this DSP engine.
+* **[Rust and WebAssembly Official Book](https://rustwasm.github.io/docs/book/)**
+  * *The Rust Wasm Working Group.* Core architectural patterns for bridging memory safely between JavaScript and compiled Wasm binaries.
+* **[Web Audio API: AudioWorklet](https://developer.mozilla.org/en-US/docs/Web/API/AudioWorklet)**
+  * *MDN Web Docs.* Documentation on bypassing the main thread to run high-performance, low-latency audio processing in the browser.
+
+### Video References
+* **[Detecting pitch automatically - The intuition behind the YIN pitch detection algorithm](https://www.youtube.com/watch?v=W585xR3bjLM)**
+  * *V For Science.* Provided critical insights into the YIN pitch detection algorithm for implementation.
+* **[The Fast Fourier Transform (FFT): Most Ingenious Algorithm Ever?](https://www.youtube.com/watch?v=h7apO7q16V0)**
+  * *Reducible.* Provided insight into the implementation of the FFT algorithm. 
