@@ -77,10 +77,10 @@ chmod +x build.sh
 # 2. Run the build pipeline
 ./build.sh
 $ python -m http.server 8000
-to start hosting the server
+# to start hosting the server
 
 wasm-pack build --target web 
-while in chromatic-tuner/ to recompile rust into .js
+# while in chromatic-tuner/ directory to recompile rust into .js
 ```
 
 ## 📚 Resources & Citations
